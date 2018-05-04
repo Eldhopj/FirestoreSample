@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "443741243994",
+    "firebase_url": "https://firestore-codingflow.firebaseio.com",
+    "project_id": "firestore-codingflow",
+    "storage_bucket": "firestore-codingflow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443741243994:android:64fd6f2a991e2bac",
+        "android_client_info": {
+          "package_name": "com.example.eldho.firebase_setupanddocumentation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443741243994-lh5gq6v4nrpc7sv43fej6ct7gqr3jbaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eldho.firebase_setupanddocumentation",
+            "certificate_hash": "b29ba43f9946d6421d084b36816d820a87d3b580"
+          }
+        },
+        {
+          "client_id": "443741243994-ehteqj1753q0l2pc05fo6p8d9kqt25oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTBo3sldJcRmbgeN_HhAu66spBYEGQIl8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443741243994-ehteqj1753q0l2pc05fo6p8d9kqt25oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
