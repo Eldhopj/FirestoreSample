@@ -20,18 +20,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final String KEY_TITLE = "title";
     private static final String KEY_DESCRIPTION = "description";
 
     private EditText editTextTitle;
     private EditText editTextDescription;
     private TextView textViewData;
+
+    NoteModel note;
 
     /**For member variables*/
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -62,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()){ /**checks document is exist in firestore or not*/
 
                     /**Gets the values inside the key from firestore*/
-                    String title = documentSnapshot.getString(KEY_TITLE);
-                    String desc = documentSnapshot.getString(KEY_DESCRIPTION);
+                    note = documentSnapshot.toObject(NoteModel.class);
+                    String title = note.getTitle();
+                    String desc = note.getDescription();
 
-                    //can also get values like this -> Map<String, Object> note = documentSnapshot.getData();
                     textViewData.setText("Title: " + title + "\n" + "Description: " + desc);
                 }else
                     Toast.makeText(MainActivity.this, "Doc missing", Toast.LENGTH_SHORT).show();
@@ -83,10 +81,7 @@ public class MainActivity extends AppCompatActivity {
         String title = editTextTitle.getText().toString();
         String description = editTextDescription.getText().toString();
 
-        // Map
-        Map<String, Object> note = new HashMap<>();
-        note.put(KEY_TITLE, title);
-        note.put(KEY_DESCRIPTION, description);
+        note = new NoteModel(title, description);
 
         //saving Items
         // can be also done like this -> db.document("Notebook/MyFirstNote");
@@ -114,10 +109,10 @@ noteRef.get()
                 if (documentSnapshot.exists()){ /**checks document is exist in firestore or not*/
 
                 /**Gets the values inside the key from firestore*/
-                    String title = documentSnapshot.getString(KEY_TITLE);
-                    String desc = documentSnapshot.getString(KEY_DESCRIPTION);
+                    note = documentSnapshot.toObject(NoteModel.class);
+                    String title = note.getTitle();
+                    String desc = note.getDescription();
 
-                    //can also get values like this -> Map<String, Object> note = documentSnapshot.getData();
                     textViewData.setText("Title: " + title + "\n" + "Description: " + desc);
                 } else {
                     //if doc is empty
@@ -139,10 +134,6 @@ noteRef.get()
         //NOTE :- must add OnSuccessListener and OnFailureListener to find whether the changes come into effect or not
         String description = editTextDescription.getText().toString();
 
-
-        //Map<String, Object> note = new HashMap<>();
-        //note.put(KEY_DESCRIPTION, description);
-
         /**Merge is used to update/create single Field/Multiple , if we didn't use merge the other field will become null*/
         //noteRef.set(note, SetOptions.merge());
 
@@ -156,7 +147,7 @@ noteRef.get()
         //note.put(KEY_DESCRIPTION, FieldValue.delete());
 
         //noteRef.update(note);
-        noteRef.update(KEY_DESCRIPTION, FieldValue.delete());
+        noteRef.update(KEY_DESCRIPTION, FieldValue.delete()); //KEY_DESCRIPTION holds the name which is same name as of Firebase DB name
     }
 
     public void deleteNote(View view) {
