@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,16 +57,7 @@ public class SingleDocumentActivity extends AppCompatActivity {
                     Toast.makeText(SingleDocumentActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (documentSnapshot.exists()) { /**checks document is exist in firestore or not*/
-
-                    /**Gets the values inside the key from firestore*/
-                    note = documentSnapshot.toObject(NoteModel.class);
-                    String title = note.getTitle();
-                    String desc = note.getDescription();
-
-                    textViewData.setText("Title: " + title + "\n" + "Description: " + desc);
-                } else
-                    Toast.makeText(SingleDocumentActivity.this, "Doc missing", Toast.LENGTH_SHORT).show();
+                getValueFromSnapshot(documentSnapshot);
             }
         });
     }
@@ -114,20 +104,8 @@ public class SingleDocumentActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) { /**checks document is exist in firestore or not*/
-
-                            /**Gets the values inside the key from firestore*/
-                            note = documentSnapshot.toObject(NoteModel.class);
-                            String title = note.getTitle();
-                            String desc = note.getDescription();
-
-                            textViewData.setText("Title: " + title + "\n" + "Description: " + desc);
-                        } else {
-                            //if doc is empty
-                            textViewData.setText("");
-                            Log.d(TAG, "Missing Doc");
+                        getValueFromSnapshot(documentSnapshot);
                         }
-                    }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -135,6 +113,21 @@ public class SingleDocumentActivity extends AppCompatActivity {
                         Toast.makeText(SingleDocumentActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void getValueFromSnapshot(DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists()) { /**checks document is exist in firestore or not*/
+
+            /**Gets the values inside the key from firestore*/
+            note = documentSnapshot.toObject(NoteModel.class);
+            String title = note.getTitle();
+            String desc = note.getDescription();
+
+            textViewData.setText("Title: " + title + "\n" + "Description: " + desc);
+        } else {
+            textViewData.setText("");
+            Toast.makeText(SingleDocumentActivity.this, "Doc missing", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
