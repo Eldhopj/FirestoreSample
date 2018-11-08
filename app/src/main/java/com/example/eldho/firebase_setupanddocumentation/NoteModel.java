@@ -1,5 +1,7 @@
 package com.example.eldho.firebase_setupanddocumentation;
 
+import com.google.firebase.firestore.Exclude;
+
 /**
  * Creating a model class
  */
@@ -7,6 +9,16 @@ package com.example.eldho.firebase_setupanddocumentation;
 public class NoteModel {
     private String title;
     private String description;
+    private String documentId; // For to get id of the document
+
+    @Exclude //Prevent it on showing to Firestore Db
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
 
     public NoteModel() {
         //public no-arg constructor needed
