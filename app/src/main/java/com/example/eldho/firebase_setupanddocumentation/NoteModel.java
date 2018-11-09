@@ -9,7 +9,23 @@ import com.google.firebase.firestore.Exclude;
 public class NoteModel {
     private String title;
     private String description;
+    private int priority;
     private String documentId; // For to get id of the document
+
+    public NoteModel() {
+        //public no-arg constructor needed
+    }
+
+    public NoteModel(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    public NoteModel(String title, String description, int priority) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+    }
 
     @Exclude //Prevent it on showing to Firestore Db
     public String getDocumentId() {
@@ -20,13 +36,12 @@ public class NoteModel {
         this.documentId = documentId;
     }
 
-    public NoteModel() {
-        //public no-arg constructor needed
+    public int getPriority() {
+        return priority;
     }
 
-    public NoteModel(String title, String description) {
-        this.title = title;
-        this.description = description;
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public String getTitle() {
