@@ -93,22 +93,34 @@ public class MultipleDocumentActivity extends AppCompatActivity {
     }
 
     public void loadNotes(View view) {
-        //NOTE: Query only runs across a single collection not across multiple collection
+   /*NOTE :1. we can apply multiple range operators with same fields
+    *           But not across multiple fields
+    *      2. we can apply multiple whereEqualTo() across multiple fields , there is no limitations
+    *      3. We can combine a single range operators with a multiple whereEqualTo() with help of Indexing
+    *      4. We can create orderBy() for multiple fields by using indexing , (orderBy must be equal to range operator)
+    *      5. firestore doesn't have an "OR" and "NOT" operator, all the combine queries are of AND operator (We can merge it locally)
+    */
+
         noteReference.whereGreaterThan("priority",2) // Check there are a lot of types of querying types
-                .orderBy("priority",Query.Direction.DESCENDING) // NOTE : the field of query(where) must be equal to field of orderBy
+
+                .whereEqualTo("title","agsfg") // Need to create Index here, check logcat
+
+                .orderBy("priority",Query.Direction.DESCENDING) // NOTE : orderBy must be equal to range operator
                 .limit(3) // Limiting to first 3 results
 
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 loopingThroughDocuments(queryDocumentSnapshots);
-                Log.d(TAG, "onSuccess: "+queryDocumentSnapshots.getDocuments().get(1).getId());
             }
 
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MultipleDocumentActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                //NOTE : Check for toast message if the result is not loading up ,
+                //       if its a crash that query combination don't work
+                Toast.makeText(MultipleDocumentActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onFailure: "+e.getLocalizedMessage()); //NOTE : Necessary for creating Indexing
             }
         });
     }
